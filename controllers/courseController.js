@@ -1,5 +1,6 @@
 import { Course } from "../models/courseModel.js";
 import { Category } from "../models/categoryModel.js";
+import { User } from "../models/userModel.js";
 
 export const createCourse=async(req,res)=>{
     try{
@@ -98,3 +99,42 @@ export const getMyCourses=async(req,res)=>{
         })
     }   
 }
+
+export const enrollInFreeCourse = async (req, res) => {
+    try {
+      const { courseId } = req.params;
+  
+      // Find course
+      const course = await Course.findById(courseId);
+      if (!course) {
+        return res.status(404).json({ success: false, message: "Course not found" });
+      }
+  
+      // Check if course is free
+      if (course.price > 0) {
+        return res.status(400).json({ success: false, message: "This course is not free" });
+      }
+  
+      // Get user
+      const user = await User.findById(req.id);
+      if (!user) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+      }
+      // Check if already enrolled
+      if (user.coursesEnrolled.includes(courseId)) {
+        return res.status(200).json({ success: true, message: "Already enrolled in this course" });
+      }
+  
+      // Enroll user
+      user.coursesEnrolled.push(courseId);
+      await user.save();
+  
+      res.status(200).json({
+        success: true,
+        message: "Successfully enrolled in the free course",
+      });
+    } catch (error) {
+      console.error("Enroll error:", error);
+      res.status(500).json({ success: false, message: "Server Error" });
+    }
+  };

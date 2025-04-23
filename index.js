@@ -23,7 +23,7 @@ app.use(express.json())
 app.use(express.urlencoded ({extended:true}))
 app.use(cookieParser())
 const corsOption={
-    origin:['http://localhost:5000', 'http://localhost:5173'],
+    origin:['http://localhost:5000', 'http://localhost:5173','https://edreq-ui.vercel.app/','https://edreq-ui-pavans-projects-0afcd1eb.vercel.app/'],
     credentials:true
 }
 app.use(cors(corsOption))
