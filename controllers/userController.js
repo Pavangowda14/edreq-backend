@@ -55,8 +55,8 @@ export const register = async (req, res) => {
       .cookie("token", token, {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        secure: false,
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
       })
       .json({
         message: `Account created and logged in`,
@@ -150,8 +150,8 @@ export const login = async (req, res) => {
       .cookie("token", token, {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        secure: false,
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
       })
 
       .json({
